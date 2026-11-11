@@ -1,5 +1,7 @@
 import Foundation
 
+
+//hi
 // MARK: - النبتة
 struct Plant: Identifiable, Codable, Equatable {
     var id = UUID()                       // رقم مميز لكل نبتة
