@@ -1,8 +1,7 @@
 import SwiftUI
 
 // MARK: - الألوان
-// الخلفيات من ألوان النظام (تصير غامقة تلقائياً مع الدارك مود)
-// والأخضر والأحمر ألوان التطبيق نفسه
+
 extension Color {
     static let appBackground = Color(.systemBackground)
     static let fieldBackground = Color(.tertiarySystemBackground)   // الحقول والكروت
@@ -15,7 +14,7 @@ extension Color {
 }
 
 // MARK: - تأثير الـ Glass للأزرار
-// في iOS 26 وفوق يطلع زجاجي، وفي الإصدارات الأقدم يرجع للون عادي
+
 extension View {
     @ViewBuilder
     func glassStyle<S: Shape>(in shape: S, tint: Color? = nil) -> some View {

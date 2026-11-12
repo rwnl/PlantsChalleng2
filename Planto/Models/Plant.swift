@@ -2,9 +2,10 @@ import Foundation
 
 
 //hi
+
 // MARK: - النبتة
 struct Plant: Identifiable, Codable, Equatable {
-    var id = UUID()                       // رقم مميز لكل نبتة
+    var id = UUID()                       // id مميز لكل نبتة
     var name: String
     var room: String
     var light: String
@@ -40,7 +41,7 @@ enum WateringFrequency: String, CaseIterable, Codable, CustomStringConvertible {
     }
 }
 
-// MARK: - خيارات القوائم المنسدلة (عدّلها متى ما تبي)
+// MARK: - خيارات القوائم المنسدلة 
 // أول خيار في كل قائمة هو الخيار الافتراضي
 struct PlantOptions {
     static let rooms = ["Bedroom", "Living Room", "Kitchen", "Balcony", "Bathroom"]

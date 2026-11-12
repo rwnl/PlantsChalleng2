@@ -161,7 +161,7 @@ private struct AllDoneView: View {
                 .padding(.top, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.bottom, 180)   // نرفعها شوي فوق الوسط مثل التصميم
+        .padding(.bottom, 180)   // نرفعها شوي 
     }
 }
 

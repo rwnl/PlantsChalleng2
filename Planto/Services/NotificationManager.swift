@@ -4,18 +4,16 @@ import UserNotifications
 class NotificationManager {
     static let shared = NotificationManager()
 
-    // وقت التذكير: الساعة 9 صباحاً (التصميم ما فيه حقل للوقت)
-    // للتجربة السريعة: في schedule بدّل trigger إلى
-    // UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
-    // وبعد ما تحفظ نبتة اقفل التطبيق (الإشعار ما يطلع والتطبيق مفتوح)
+    // وقت التذكير: الساعة 9 صباحاً (حطيته افتراضي)
+   
     private let reminderHour = 9
     private let reminderMinute = 0
 
-    // جدولة إشعار لنبتة (يطلب الصلاحية أول مرة)
+    // جدولة إشعار لنبتة يطلب الصلاحية أول مرة
     func schedule(for plant: Plant) {
         let center = UNUserNotificationCenter.current()
 
-        // نحذف الإشعار القديم (مفيد لما نعدّل النبتة)
+        // لحذف الإشعار القديم مفيد لما نعدّل النبتة
         center.removePendingNotificationRequests(withIdentifiers: [plant.id.uuidString])
 
         let content = UNMutableNotificationContent()
@@ -23,6 +21,11 @@ class NotificationManager {
         content.body = "Hey! let's water your plant"
         content.sound = .default
 
+        
+        
+        // للتجربة فقط: يطلع الإشعار بعد 10 ثواني
+       // let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+        
         let trigger = makeTrigger(days: plant.wateringDays.days)
         let request = UNNotificationRequest(identifier: plant.id.uuidString, content: content, trigger: trigger)
 
@@ -33,7 +36,7 @@ class NotificationManager {
         }
     }
 
-    // إلغاء إشعار نبتة (لما نحذفها)
+    // إلغاء إشعار نبتة (لما احذفها)
     func cancel(for plant: Plant) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [plant.id.uuidString])
     }
