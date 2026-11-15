@@ -1,11 +1,11 @@
 import SwiftUI
 
+// الطبقة: View
 // نافذة Set Reminder: نستخدمها للإضافة وللتعديل
 // plant = nil يعني نبتة جديدة، وإذا فيه نبتة يعني تعديل
 struct SetReminderView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: SetReminderViewModel
-    @FocusState private var isNameFocused: Bool
 
     var onSave: (Plant) -> Void
     var onDelete: (Plant) -> Void
@@ -33,11 +33,6 @@ struct SetReminderView: View {
             Spacer()
         }
         .presentationDragIndicator(.hidden)
-        .onAppear {
-            if viewModel.existingPlant == nil {
-                isNameFocused = true
-            }
-        }
     }
 
     // MARK: - الأجزاء
@@ -66,9 +61,9 @@ struct SetReminderView: View {
                 // زر الشيك: ما يشتغل إلا لما الفورم يكتمل
                 Button(action: save) {
                     Image(systemName: "checkmark")
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(.white)
-                        .frame(width: 40, height: 40)
+                        .frame(width: 36, height: 36)
                         .glassStyle(in: Circle(), tint: Color.appGreen)
                 }
                 .buttonStyle(.plain)
@@ -82,23 +77,22 @@ struct SetReminderView: View {
 
     // حقل اسم النبتة
     private var nameField: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 8) {
             Text("Plant Name")
-                .font(.system(size: 14))
+                .font(.system(size: 17))
                 .foregroundColor(.primary)
 
             TextField("", text: $viewModel.name, prompt: Text("Pothos").foregroundColor(Color.secondary))
-                .font(.system(size: 14))
+                .font(.system(size: 17))
                 .foregroundColor(.primary)
                 .tint(Color.checkGreen)
-                .focused($isNameFocused)
         }
-        .padding(.horizontal, 16)
-        .frame(height: 48)
+        .padding(.horizontal, 20)
+        .frame(height: 56)
         .background(Color.fieldBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .clipShape(Capsule())
         .padding(.horizontal, 16)
-        .padding(.top, 40)
+        .padding(.top, 54)
     }
 
     // الكرت الأول: Room و Light
@@ -106,12 +100,13 @@ struct SetReminderView: View {
         VStack(spacing: 0) {
             OptionRow(icon: "location", title: "Room", selection: $viewModel.room, options: PlantOptions.rooms)
             DividerLine()
+                .padding(.horizontal, 14)
             OptionRow(icon: "sun.max", title: "Light", selection: $viewModel.light, options: PlantOptions.lights)
         }
         .background(Color.fieldBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .clipShape(RoundedRectangle(cornerRadius: 26))
         .padding(.horizontal, 16)
-        .padding(.top, 48)
+        .padding(.top, 44)
     }
 
     // الكرت الثاني: Watering Days و Water
@@ -119,30 +114,32 @@ struct SetReminderView: View {
         VStack(spacing: 0) {
             OptionRow(icon: "drop", title: "Watering Days", selection: $viewModel.wateringDays, options: WateringFrequency.allCases)
             DividerLine()
+                .padding(.horizontal, 14)
             OptionRow(icon: "drop", title: "Water", selection: $viewModel.water, options: PlantOptions.waterAmounts)
         }
         .background(Color.fieldBackground)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .clipShape(RoundedRectangle(cornerRadius: 26))
         .padding(.horizontal, 16)
-        .padding(.top, 36)
+        .padding(.top, 46)
     }
 
-    // زر Delete Reminder الأحمر
+    // زر Delete Reminder الأحمر (مسطح مثل التصميم)
     private func deleteButton(for plant: Plant) -> some View {
         Button {
             onDelete(plant)
             dismiss()
         } label: {
             Text("Delete Reminder")
-                .font(.system(size: 14))
+                .font(.system(size: 17))
                 .foregroundColor(Color.deleteRed)
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)
-                .glassStyle(in: RoundedRectangle(cornerRadius: 14))
+                .background(Color.fieldBackground)
+                .clipShape(Capsule())
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 16)
-        .padding(.top, 48)
+        .padding(.horizontal, 20)
+        .padding(.top, 64)
     }
 
     private func save() {
@@ -162,10 +159,10 @@ struct OptionRow<Option: Hashable & CustomStringConvertible>: View {
     var body: some View {
         HStack {
             Image(systemName: icon)
-                .font(.system(size: 13))
+                .font(.system(size: 16))
                 .foregroundColor(.primary)
             Text(title)
-                .font(.system(size: 14))
+                .font(.system(size: 17))
                 .foregroundColor(.primary)
 
             Spacer()
@@ -180,8 +177,8 @@ struct OptionRow<Option: Hashable & CustomStringConvertible>: View {
             .labelsHidden()
             .tint(Color.secondary)
         }
-        .padding(.horizontal, 12)
-        .frame(height: 43)
+        .padding(.horizontal, 14)
+        .frame(height: 44)
     }
 }
 

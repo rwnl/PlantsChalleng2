@@ -25,6 +25,8 @@ enum WateringFrequency: String, CaseIterable, Codable, CustomStringConvertible {
     case everyDay = "Every day"
     case every2Days = "Every 2 days"
     case every3Days = "Every 3 days"
+    case every10Days = "Every 10 days"
+    case every2Weeks = "Every 2 weeks"
     case weekly = "Once a week"
 
     // النص اللي يظهر في القائمة
@@ -37,6 +39,8 @@ enum WateringFrequency: String, CaseIterable, Codable, CustomStringConvertible {
         case .every2Days: return 2
         case .every3Days: return 3
         case .weekly: return 7
+        case .every10Days: return 10
+        case .every2Weeks: return 14
         }
     }
 }

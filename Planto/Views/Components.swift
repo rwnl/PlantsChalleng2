@@ -100,8 +100,7 @@ struct PlantRowView: View {
             // التاقات
             HStack(spacing: 8) {
                 TagView(icon: "sun.max", text: plant.light, textColor: Color.sunTagText)
-                TagView(icon: "drop", text: plant.water)
-            }
+                TagView(icon: "drop", text: plant.water, textColor: Color.waterTagText)            }
             .opacity(plant.isWatered ? 0.5 : 1.0)
             .padding(.leading, 34)
         }
@@ -207,14 +206,38 @@ struct SwipeToDeleteRow<Content: View>: View {
     }
 }
 
-#Preview {
+#Preview("Plant Rows") {
     VStack(spacing: 0) {
         SwipeToDeleteRow(onDelete: {}) {
             PlantRowView(plant: Plant.samplePlants[0], onToggle: {})
         }
         DividerLine()
-        PlantRowView(plant: Plant.wateredSample, onToggle: {})
+        PlantRowView(plant: Plant(name: "Pothos", room: "Bedroom", light: "Full sun", wateringDays: .everyDay, water: "20-50 ml", lastWateredDate: Date()), onToggle: {})
     }
     .background(Color.appBackground)
     .preferredColorScheme(.dark)
+}
+
+#Preview("Add Button") {
+    AddButton(action: {})
+        .padding(40)
+        .background(Color.appBackground)
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Tags") {
+    HStack {
+        TagView(icon: "sun.max", text: "Full sun", textColor: Color.sunTagText)
+        TagView(icon: "drop", text: "20-50 ml", textColor: Color.waterTagText)
+    }
+    .padding(40)
+    .background(Color.appBackground)
+    .preferredColorScheme(.dark)
+}
+
+#Preview("Progress Bar") {
+    ProgressBarView(progress: 0.5)
+        .padding(40)
+        .background(Color.appBackground)
+        .preferredColorScheme(.dark)
 }
