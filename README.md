@@ -1,22 +1,22 @@
-&#x20;\<p align="center">
-&#x20; \<img src="Screenshots/Screenshots/app-icon.png" width="120" alt="Planto app icon">
-\</p>
+&#x20;<p align="center">
+&#x20; <img src="Screenshots/Screenshots/app-icon.png" width="120" alt="Planto app icon">
+</p>
 
-\<h1 align="center">Planto 🌱\</h1>
+<h1 align="center">Planto 🌱\</h1>
 
-\<p align="center">   A plant care reminder app for iOS.\<br>   Add your plants, get a reminder when they need water, and check them off when you water them 💦 \</p>
+<p align="center">   A plant care reminder app for iOS.\<br>   Add your plants, get a reminder when they need water, and check them off when you water them 💦 \</p>
 
-\<p align="center">   \<img src="[https://img.shields.io/badge/Swift-F05138?logo=swift&logoColor=white](https://img.shields.io/badge/Swift-F05138?logo=swift\&logoColor=white)" alt="Swift">   \<img src="[https://img.shields.io/badge/SwiftUI-0A84FF?logo=swift&logoColor=white](https://img.shields.io/badge/SwiftUI-0A84FF?logo=swift\&logoColor=white)" alt="SwiftUI">   \<img src="[https://img.shields.io/badge/iOS-17%2B-black?logo=apple&logoColor=white](https://img.shields.io/badge/iOS-17%2B-black?logo=apple\&logoColor=white)" alt="iOS 17+">   \<img src="[https://img.shields.io/badge/Architecture-MVVM-338069](https://img.shields.io/badge/Architecture-MVVM-338069)" alt="MVVM"> \</p>
+<p align="center">   \<img src="[https://img.shields.io/badge/Swift-F05138?logo=swift&logoColor=white](https://img.shields.io/badge/Swift-F05138?logo=swift\&logoColor=white)" alt="Swift">   \<img src="[https://img.shields.io/badge/SwiftUI-0A84FF?logo=swift&logoColor=white](https://img.shields.io/badge/SwiftUI-0A84FF?logo=swift\&logoColor=white)" alt="SwiftUI">   \<img src="[https://img.shields.io/badge/iOS-17%2B-black?logo=apple&logoColor=white](https://img.shields.io/badge/iOS-17%2B-black?logo=apple\&logoColor=white)" alt="iOS 17+">   \<img src="[https://img.shields.io/badge/Architecture-MVVM-338069](https://img.shields.io/badge/Architecture-MVVM-338069)" alt="MVVM"> \</p>
 
 ---
 
-\<p align="center">   \<img src="Screenshots/Screenshots/banner.png" alt="Planto banner"> \</p>
+<p align="center">   <img src="Screenshots/Screenshots/banner.png" alt="Planto banner"> </p>
 
 ## Screenshots
 
-\<p align="center">   \<img src="Screenshots/Screenshots/start.png" width="200" alt="Start screen">   \<img src="Screenshots/Screenshots/set-reminder.png" width="200" alt="Set reminder">   \<img src="Screenshots/Screenshots/my-plants.png" width="200" alt="My plants"> \</p>
+<p align="center">   <img src="Screenshots/Screenshots/start.png" width="200" alt="Start screen">   <img src="Screenshots/Screenshots/set-reminder.png" width="200" alt="Set reminder">   <img src="Screenshots/Screenshots/my-plants.png" width="200" alt="My plants"> </p>
 
-\<p align="center">   \<img src="Screenshots/Screenshots/swipe-delete.png" width="200" alt="Swipe to delete">   \<img src="Screenshots/Screenshots/all-done.png" width="200" alt="All done">   \<img src="Screenshots/Screenshots/notification.png" width="200" alt="Reminder notification"> \</p>
+<p align="center">   <img src="Screenshots/Screenshots/swipe-delete.png" width="200" alt="Swipe to delete">   <img src="Screenshots/Screenshots/all-done.png" width="200" alt="All done">   <img src="Screenshots/Screenshots/notification.png" width="200" alt="Reminder notification"> </p>
 
 ## Features
 
@@ -66,4 +66,4 @@ Liquid Glass buttons need iOS 26 or later. On older versions the buttons use a s
 
 ---
 
-\<p align="center">Made by Rawan 🌿\</p>
+<p align="center">Made by Rawan 🌿</p>
