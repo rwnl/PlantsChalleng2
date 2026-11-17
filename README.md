@@ -1,4 +1,6 @@
-&#x20;\<p align="center">   \<img src="Screenshots/Screenshots/app-icon.png" width="120" alt="Planto app icon"> \</p>
+&#x20;\<p align="center">
+&#x20; \<img src="Screenshots/Screenshots/app-icon.png" width="120" alt="Planto app icon">
+\</p>
 
 \<h1 align="center">Planto 🌱\</h1>
 
@@ -40,7 +42,7 @@
 
 ## Project Structure
 
-```
+```text
 Planto
 ├── Models          Plant data and watering options
 ├── ViewModels      App logic (saving, deleting, progress, screen state)
@@ -54,7 +56,7 @@ The Views only display things. All the logic lives in the ViewModels, and the no
 ## Getting Started
 
 1. Clone the repository
-   ```
+   ```bash
    git clone https://github.com/YOUR-USERNAME/Planto.git
    ```
 2. Open `Planto.xcodeproj` in Xcode
