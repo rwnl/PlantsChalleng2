@@ -5,8 +5,10 @@
 <h1 align="center">Planto 🌱</h1>
 
 <p align="center">   A plant care reminder app for iOS.<br>   Add your plants, get a reminder when they need water, and check them off when you water them 💦 </p>
-
-<p align="center">   <img src="[https://img.shields.io/badge/Swift-F05138?logo=swift&logoColor=white](https://img.shields.io/badge/Swift-F05138?logo=swift\&logoColor=white)" alt="Swift">   <img src="[https://img.shields.io/badge/SwiftUI-0A84FF?logo=swift&logoColor=white](https://img.shields.io/badge/SwiftUI-0A84FF?logo=swift\&logoColor=white)" alt="SwiftUI">   <img src="[https://img.shields.io/badge/iOS-17%2B-black?logo=apple&logoColor=white](https://img.shields.io/badge/iOS-17%2B-black?logo=apple\&logoColor=white)" alt="iOS 17+">   <img src="[https://img.shields.io/badge/Architecture-MVVM-338069](https://img.shields.io/badge/Architecture-MVVM-338069)" alt="MVVM"> </p>
+<p align="center">
+   
+  <b>Swift</b> · <b>SwiftUI</b> · <b>iOS 17+</b> · <b>MVVM</b>
+</p>
 
 ---
 
