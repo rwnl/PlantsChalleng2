@@ -5,9 +5,12 @@
 <h1 align="center">Planto 🌱</h1>
 
 <p align="center">   A plant care reminder app for iOS.<br>   Add your plants, get a reminder when they need water, and check them off when you water them 💦 </p>
+
 <p align="center">
-   
-  <b>Swift</b> · <b>SwiftUI</b> · <b>iOS 17+</b> · <b>MVVM</b>
+  <img src="https://img.shields.io/badge/Swift-F05138?style=for-the-badge" alt="Swift">
+  <img src="https://img.shields.io/badge/SwiftUI-0A84FF?style=for-the-badge" alt="SwiftUI">
+  <img src="https://img.shields.io/badge/iOS-17+-000000?style=for-the-badge" alt="iOS 17+">
+  <img src="https://img.shields.io/badge/MVVM-338069?style=for-the-badge" alt="MVVM">
 </p>
 
 ---
@@ -22,15 +25,13 @@
 
 ## Features
 
+
 - 🌿 Add a plant with its name, room, light and water amount
-- 📅 Choose how often to water it: every day, 2 days, 3 days, once a week, 10 days or 2 weeks
-- ✏️ Tap a plant to edit it, or swipe it to delete it
+- 📅 Choose how often to water it, from every day to every 2 weeks
+- ✏️ Tap a plant to edit it, or swipe to delete it
 - ✅ Check off a plant when you water it and watch the progress bar fill up
-- 🎉 Get a happy "All Done" screen when all your plants are watered
-- 🔔 Get one reminder at 3 PM on the days your plants need water, grouped in a single notification
-- 🔕 No reminder for plants you already watered
+- 🔔 Get a reminder on the days your plants need water
 - 💾 Your plants stay saved on your phone
-- 🌙 Dark mode design with Liquid Glass buttons
 
 ## Built With
 
@@ -42,18 +43,7 @@
 | **Storage**       | UserDefaults and Codable  |
 | **Notifications** | UserNotifications (local) |
 
-## Project Structure
 
-```text
-Planto
-├── Models          Plant data and watering options
-├── ViewModels      App logic (saving, deleting, progress, screen state)
-├── Views           Screens and small reusable components
-├── Services        Notification scheduling
-└── Theme           Colors and glass effect
-```
-
-The Views only display things. All the logic lives in the ViewModels, and the notifications live in their own service.
 
 ## Getting Started
 
@@ -64,7 +54,7 @@ The Views only display things. All the logic lives in the ViewModels, and the no
 2. Open `Planto.xcodeproj` in Xcode
 3. Choose a simulator and press **Run**
 
-Liquid Glass buttons need iOS 26 or later. On older versions the buttons use a simple colored background.
+
 
 ---
 
