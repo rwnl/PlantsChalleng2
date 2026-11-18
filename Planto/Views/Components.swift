@@ -1,24 +1,24 @@
 import SwiftUI
 
-// الأجزاء الصغيرة اللي تتكرر في أكثر من شاشة
+// Small views that are used on more than one screen
 
-// MARK: - زر + الأخضر
+// MARK: - Green + button
 struct AddButton: View {
     var action: () -> Void
-
+    
     var body: some View {
         Button(action: action) {
             Image(systemName: "plus")
-                .font(.system(size: 16, weight: .medium))
+                .font(.system(size: 20, weight: .medium))
                 .foregroundColor(.white)
-                .frame(width: 40, height: 40)
+                .frame(width: 45, height: 45)
                 .glassStyle(in: Circle(), tint: Color.appGreen)
         }
         .buttonStyle(.plain)
     }
 }
 
-// MARK: - خط رفيع فاصل
+// MARK: - Thin divider line
 struct DividerLine: View {
     var body: some View {
         Rectangle()
@@ -27,12 +27,12 @@ struct DividerLine: View {
     }
 }
 
-// MARK: - التاق الصغير مثل "Full sun" و "20-50 ml"
+// MARK: - Small tag like "Full sun" and "20-50 ml"
 struct TagView: View {
     var icon: String
     var text: String
     var textColor: Color = .primary
-
+    
     var body: some View {
         HStack(spacing: 4) {
             Image(systemName: icon)
@@ -48,10 +48,10 @@ struct TagView: View {
     }
 }
 
-// MARK: - شريط التقدم (progress من 0 إلى 1)
+// MARK: - Progress bar (progress goes from 0 to 1)
 struct ProgressBarView: View {
     var progress: Double
-
+    
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
@@ -67,15 +67,15 @@ struct ProgressBarView: View {
     }
 }
 
-// MARK: - صف النبتة
+// MARK: - Plant row
 struct PlantRowView: View {
     var plant: Plant
-    var onToggle: () -> Void   // لما نضغط الدائرة
-
+    var onToggle: () -> Void   // called when the circle is tapped
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-
-            // اسم الغرفة
+            
+            // Room name
             HStack(spacing: 4) {
                 Image(systemName: "location")
                     .font(.system(size: 9))
@@ -84,23 +84,24 @@ struct PlantRowView: View {
             }
             .foregroundColor(Color.primary.opacity(plant.isWatered ? 0.25 : 0.45))
             .padding(.leading, 34)
-
-            // الدائرة + اسم النبتة
+            
+            // Circle + plant name
             HStack(spacing: 10) {
                 Button(action: onToggle) {
                     checkCircle
                 }
                 .buttonStyle(.plain)
-
+                
                 Text(plant.name)
                     .font(.system(size: 22))
                     .foregroundColor(Color.primary.opacity(plant.isWatered ? 0.5 : 1.0))
             }
-
-            // التاقات
+            
+            // Tags
             HStack(spacing: 8) {
                 TagView(icon: "sun.max", text: plant.light, textColor: Color.sunTagText)
-                TagView(icon: "drop", text: plant.water, textColor: Color.waterTagText)            }
+                TagView(icon: "drop", text: plant.water, textColor: Color.waterTagText)
+            }
             .opacity(plant.isWatered ? 0.5 : 1.0)
             .padding(.leading, 34)
         }
@@ -108,8 +109,8 @@ struct PlantRowView: View {
         .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-
-    // الدائرة: فاضية، أو خضراء فيها علامة صح
+    
+    // The circle: empty, or green with a check mark
     private var checkCircle: some View {
         ZStack {
             if plant.isWatered {
@@ -128,26 +129,26 @@ struct PlantRowView: View {
     }
 }
 
-// MARK: - السحب للحذف
-// يلف أي صف ويخليه ينسحب لليسار ويطلع زر الحذف الأحمر
+// MARK: - Swipe to delete
+// Wraps any row, so it can slide to the left and show the red delete button
 struct SwipeToDeleteRow<Content: View>: View {
     var onDelete: () -> Void
     var content: Content
-
-    @State private var offset: CGFloat = 0     // كم انسحب الصف
-    @State private var isOpen = false          // هل زر الحذف ظاهر؟
-
-    private let openWidth: CGFloat = 80        // كم ينسحب الصف لين يظهر الزر
-
+    
+    @State private var offset: CGFloat = 0     // how far the row moved
+    @State private var isOpen = false          // is the delete button showing?
+    
+    private let openWidth: CGFloat = 80        // how far the row slides to show the button
+    
     init(onDelete: @escaping () -> Void, @ViewBuilder content: () -> Content) {
         self.onDelete = onDelete
         self.content = content()
     }
-
+    
     var body: some View {
         ZStack(alignment: .trailing) {
-
-            // زر الحذف (مخفي ورا الصف)
+            
+            // Delete button (hidden behind the row)
             Button(action: onDelete) {
                 Image(systemName: "trash")
                     .font(.system(size: 14))
@@ -157,13 +158,13 @@ struct SwipeToDeleteRow<Content: View>: View {
                     .clipShape(Capsule())
             }
             .padding(.trailing, 12)
-
-            // الصف نفسه
+            
+            // The row itself
             content
                 .background(Color.appBackground)
                 .allowsHitTesting(!isOpen)
                 .overlay {
-                    // لما يكون الصف مسحوب، الضغطة عليه ترجعه مكانه
+                    // When the row is open, tapping it closes it again
                     if isOpen {
                         Color.clear
                             .contentShape(Rectangle())
@@ -174,19 +175,20 @@ struct SwipeToDeleteRow<Content: View>: View {
                 .simultaneousGesture(dragGesture)
         }
     }
-
+    
     private var dragGesture: some Gesture {
         DragGesture(minimumDistance: 20)
             .onChanged { value in
-                // نتجاهل السحب العمودي (عشان ما نخرب السكرول)
+                // Ignore vertical drags (so we don't break scrolling)
                 guard abs(value.translation.width) > abs(value.translation.height) else { return }
-
+                
                 let start: CGFloat = isOpen ? -openWidth : 0
                 let newOffset = start + value.translation.width
                 offset = min(0, max(newOffset, -openWidth - 20))
             }
             .onEnded { _ in
                 withAnimation(.easeOut(duration: 0.2)) {
+                    // Open if dragged more than half, otherwise close
                     if offset < -openWidth / 2 {
                         offset = -openWidth
                         isOpen = true
@@ -197,7 +199,7 @@ struct SwipeToDeleteRow<Content: View>: View {
                 }
             }
     }
-
+    
     private func close() {
         withAnimation(.easeOut(duration: 0.2)) {
             offset = 0

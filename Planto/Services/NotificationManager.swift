@@ -1,30 +1,24 @@
 import UserNotifications
 
-// مسؤول عن إشعارات التذكير بالسقي
+// Layer: Service
+// Builds one reminder per day at 3 PM for all plants that need water that day
 class NotificationManager {
     static let shared = NotificationManager()
-
-    // وقت التذكير: الساعة 3 مساءً (15 بنظام 24 ساعة)
-    private let reminderHour = 15
-    private let reminderMinute = 0
-
-    // عدد الإشعارات اللي نجدولها مقدماً للنبتة (لما التكرار مو يومي ولا أسبوعي)
-    private let upcomingCount = 10
-
-    // جدولة إشعارات نبتة (يطلب الصلاحية أول مرة)
-    func schedule(for plant: Plant) {
+    
+    private let reminderHour = 14
+    private let reminderMinute = 15
+    private let daysAhead = 30   // how many days ahead we schedule
+    
+    // Deletes all old reminders and builds them again from the current plants
+    func refresh(plants: [Plant]) {
         let center = UNUserNotificationCenter.current()
-
-        // نحذف الإشعارات القديمة (مفيد لما نعدّل النبتة)
-        cancel(for: plant)
-
-        let content = UNMutableNotificationContent()
-        content.title = "Planto"
-        content.body = "Hey! let's water your plant"
-        content.sound = .default
-
-        let requests = makeRequests(for: plant, content: content)
-
+        center.removeAllPendingNotificationRequests()
+        
+        // no plants = no reminders (and no permission popup)
+        guard !plants.isEmpty else { return }
+        
+        let requests = makeRequests(for: plants)
+        
         center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
             if granted {
                 for request in requests {
@@ -33,49 +27,47 @@ class NotificationManager {
             }
         }
     }
-
-    // إلغاء كل إشعارات نبتة (لما نحذفها أو نعدّلها)
-    func cancel(for plant: Plant) {
-        var ids = [plant.id.uuidString]
-        for number in 1...upcomingCount {
-            ids.append("\(plant.id.uuidString)-\(number)")
-        }
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ids)
-    }
-
-    // نبني الإشعارات حسب أيام السقي
-    private func makeRequests(for plant: Plant, content: UNNotificationContent) -> [UNNotificationRequest] {
-        let days = plant.wateringDays.days
-        let id = plant.id.uuidString
-
-        var time = DateComponents()
-        time.hour = reminderHour
-        time.minute = reminderMinute
-
-        // كل يوم: إشعار واحد يتكرر
-        if days == 1 {
-            let trigger = UNCalendarNotificationTrigger(dateMatching: time, repeats: true)
-            return [UNNotificationRequest(identifier: id, content: content, trigger: trigger)]
-        }
-
-        // كل أسبوع: إشعار واحد يتكرر في نفس يوم الأسبوع
-        if days == 7 {
-            time.weekday = Calendar.current.component(.weekday, from: Date())
-            let trigger = UNCalendarNotificationTrigger(dateMatching: time, repeats: true)
-            return [UNNotificationRequest(identifier: id, content: content, trigger: trigger)]
-        }
-
-        // باقي الحالات (2 و3 و10 و14): نجدول عدة إشعارات مقدماً، كلها الساعة 3
+    
+    // One request for each day that has at least one plant to water
+    private func makeRequests(for plants: [Plant]) -> [UNNotificationRequest] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
         var requests: [UNNotificationRequest] = []
-        for number in 1...upcomingCount {
-            let date = Calendar.current.date(byAdding: .day, value: days * number, to: Date()) ?? Date()
-            var parts = Calendar.current.dateComponents([.year, .month, .day], from: date)
+        
+        for offset in 0..<daysAhead {
+            guard let day = calendar.date(byAdding: .day, value: offset, to: today),
+                  let time = calendar.date(bySettingHour: reminderHour, minute: reminderMinute, second: 0, of: day),
+                  time > Date() else { continue }   // skip if 3 PM already passed
+            
+            let duePlants = plants.filter { isDue($0, on: day) }
+            if duePlants.isEmpty { continue }
+            
+            let content = UNMutableNotificationContent()
+            content.title = "Planto"
+            content.body = duePlants.count == 1 ? "Hey! let's water your plant" : "Hey! let's water your plants"
+            content.sound = .default
+            
+            var parts = calendar.dateComponents([.year, .month, .day], from: day)
             parts.hour = reminderHour
             parts.minute = reminderMinute
-
+            
             let trigger = UNCalendarNotificationTrigger(dateMatching: parts, repeats: false)
-            requests.append(UNNotificationRequest(identifier: "\(id)-\(number)", content: content, trigger: trigger))
+            requests.append(UNNotificationRequest(identifier: "planto-\(offset)", content: content, trigger: trigger))
         }
         return requests
+    }
+    
+    // Does this plant need water on this day?
+    private func isDue(_ plant: Plant, on day: Date) -> Bool {
+        let calendar = Calendar.current
+        
+        // already watered today = no reminder for it today
+        if calendar.isDateInToday(day) && plant.isWatered { return false }
+        
+        // count days from the last watering (or from the day it was added)
+        let anchor = calendar.startOfDay(for: plant.lastWateredDate ?? plant.startDate ?? Date())
+        let passedDays = calendar.dateComponents([.day], from: anchor, to: day).day ?? 0
+        
+        return passedDays >= 0 && passedDays % plant.wateringDays.days == 0
     }
 }

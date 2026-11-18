@@ -1,38 +1,36 @@
 import Foundation
 
-
-//hi
-
-// MARK: - النبتة
+// MARK: - Plant
 struct Plant: Identifiable, Codable, Equatable {
-    var id = UUID()                       // id مميز لكل نبتة
+    var id = UUID()                    // unique id for each plant
     var name: String
     var room: String
     var light: String
     var wateringDays: WateringFrequency
     var water: String
-    var lastWateredDate: Date? = nil      // آخر مرة انسقت فيها
-
-    // هل انسقت اليوم؟ (كل يوم جديد ترجع false تلقائياً)
+    var lastWateredDate: Date? = nil   // last time the plant was watered (nil = never)
+    var startDate: Date? = nil         // the day the plant was added
+    
+    // true if the plant was watered today (becomes false again on a new day)
     var isWatered: Bool {
         guard let date = lastWateredDate else { return false }
         return Calendar.current.isDateInToday(date)
     }
 }
 
-// MARK: - تكرار السقي
+// MARK: - Watering Frequency
 enum WateringFrequency: String, CaseIterable, Codable, CustomStringConvertible {
     case everyDay = "Every day"
     case every2Days = "Every 2 days"
     case every3Days = "Every 3 days"
+    case weekly = "Once a week"
     case every10Days = "Every 10 days"
     case every2Weeks = "Every 2 weeks"
-    case weekly = "Once a week"
 
-    // النص اللي يظهر في القائمة
+    // text shown in the picker
     var description: String { rawValue }
 
-    // كم يوم بين كل سقي (يستخدمها الإشعار)
+    // number of days between waterings (used by notifications)
     var days: Int {
         switch self {
         case .everyDay: return 1
@@ -45,15 +43,15 @@ enum WateringFrequency: String, CaseIterable, Codable, CustomStringConvertible {
     }
 }
 
-// MARK: - خيارات القوائم المنسدلة 
-// أول خيار في كل قائمة هو الخيار الافتراضي
+// MARK: - Picker Options
+// the first option in each list is the default
 struct PlantOptions {
     static let rooms = ["Bedroom", "Living Room", "Kitchen", "Balcony", "Bathroom"]
     static let lights = ["Full sun", "Partial sun", "Low light"]
     static let waterAmounts = ["20-50 ml", "50-100 ml", "100-200 ml", "200-300 ml"]
 }
 
-// MARK: - بيانات تجريبية للـ Preview
+// MARK: - Sample Data (for previews only)
 extension Plant {
     static let samplePlants = [
         Plant(name: "Monstera", room: "Kitchen", light: "Full sun", wateringDays: .everyDay, water: "20-50 ml"),
@@ -61,11 +59,4 @@ extension Plant {
         Plant(name: "Orchid", room: "Living Room", light: "Full sun", wateringDays: .everyDay, water: "20-50 ml"),
         Plant(name: "Spider", room: "Kitchen", light: "Full sun", wateringDays: .everyDay, water: "20-50 ml")
     ]
-
-    // نبتة انسقت (للـ Preview)
-    static var wateredSample: Plant {
-        var plant = samplePlants[1]
-        plant.lastWateredDate = Date()
-        return plant
-    }
 }

@@ -1,15 +1,15 @@
 import SwiftUI
 
-// الطبقة: View
-// نافذة Set Reminder: نستخدمها للإضافة وللتعديل
-// plant = nil يعني نبتة جديدة، وإذا فيه نبتة يعني تعديل
+// Layer: View
+// The Set Reminder sheet: used for adding and for editing
+// plant = nil means a new plant, and if there is a plant it means editing
 struct SetReminderView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var viewModel: SetReminderViewModel
-
+    
     var onSave: (Plant) -> Void
     var onDelete: (Plant) -> Void
-
+    
     init(plant: Plant? = nil,
          onSave: @escaping (Plant) -> Void,
          onDelete: @escaping (Plant) -> Void = { _ in }) {
@@ -17,33 +17,33 @@ struct SetReminderView: View {
         self.onSave = onSave
         self.onDelete = onDelete
     }
-
+    
     var body: some View {
         VStack(spacing: 0) {
             topBar
             nameField
             firstCard
             secondCard
-
-            // زر الحذف يظهر في التعديل بس
+            
+            // The delete button shows only when editing
             if let plant = viewModel.existingPlant {
                 deleteButton(for: plant)
             }
-
+            
             Spacer()
         }
         .presentationDragIndicator(.hidden)
     }
-
-    // MARK: - الأجزاء
-
-    // الشريط العلوي: X والعنوان وزر الشيك
+    
+    // MARK: - Parts
+    
+    // Top bar: X button, title and check button
     private var topBar: some View {
         ZStack {
             Text("Set Reminder")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(.primary)
-
+            
             HStack {
                 Button {
                     dismiss()
@@ -55,10 +55,10 @@ struct SetReminderView: View {
                         .glassStyle(in: Circle())
                 }
                 .buttonStyle(.plain)
-
+                
                 Spacer()
-
-                // زر الشيك: ما يشتغل إلا لما الفورم يكتمل
+                
+                // Check button: works only when the form is complete
                 Button(action: save) {
                     Image(systemName: "checkmark")
                         .font(.system(size: 13, weight: .semibold))
@@ -74,14 +74,14 @@ struct SetReminderView: View {
         .padding(.horizontal, 16)
         .padding(.top, 16)
     }
-
-    // حقل اسم النبتة
+    
+    // Plant name field
     private var nameField: some View {
         HStack(spacing: 8) {
             Text("Plant Name")
                 .font(.system(size: 17))
                 .foregroundColor(.primary)
-
+            
             TextField("", text: $viewModel.name, prompt: Text("Pothos").foregroundColor(Color.secondary))
                 .font(.system(size: 17))
                 .foregroundColor(.primary)
@@ -94,8 +94,8 @@ struct SetReminderView: View {
         .padding(.horizontal, 16)
         .padding(.top, 54)
     }
-
-    // الكرت الأول: Room و Light
+    
+    // First card: Room and Light
     private var firstCard: some View {
         VStack(spacing: 0) {
             OptionRow(icon: "location", title: "Room", selection: $viewModel.room, options: PlantOptions.rooms)
@@ -108,8 +108,8 @@ struct SetReminderView: View {
         .padding(.horizontal, 16)
         .padding(.top, 44)
     }
-
-    // الكرت الثاني: Watering Days و Water
+    
+    // Second card: Watering Days and Water
     private var secondCard: some View {
         VStack(spacing: 0) {
             OptionRow(icon: "drop", title: "Watering Days", selection: $viewModel.wateringDays, options: WateringFrequency.allCases)
@@ -122,8 +122,8 @@ struct SetReminderView: View {
         .padding(.horizontal, 16)
         .padding(.top, 46)
     }
-
-    // زر Delete Reminder الأحمر (مسطح مثل التصميم)
+    
+    // Red Delete Reminder button (flat, like the design)
     private func deleteButton(for plant: Plant) -> some View {
         Button {
             onDelete(plant)
@@ -141,21 +141,22 @@ struct SetReminderView: View {
         .padding(.horizontal, 20)
         .padding(.top, 64)
     }
-
+    
+    // Send the plant to the main screen, then close the sheet
     private func save() {
         onSave(viewModel.makePlant())
         dismiss()
     }
 }
 
-// MARK: - صف في الكرت: أيقونة + اسم + قائمة منسدلة (مثل Room و Light)
-// يشتغل مع أي نوع (نص أو enum) طالما له وصف نصي
+// MARK: - A row inside a card: icon + title + dropdown menu (like Room and Light)
+// Works with any type (text or enum) as long as it has a text description
 struct OptionRow<Option: Hashable & CustomStringConvertible>: View {
     var icon: String
     var title: String
     @Binding var selection: Option
     var options: [Option]
-
+    
     var body: some View {
         HStack {
             Image(systemName: icon)
@@ -164,10 +165,10 @@ struct OptionRow<Option: Hashable & CustomStringConvertible>: View {
             Text(title)
                 .font(.system(size: 17))
                 .foregroundColor(.primary)
-
+            
             Spacer()
-
-            // القائمة المنسدلة (تعرض القيمة مع السهمين)
+            
+            // Dropdown menu (shows the value with the two arrows)
             Picker(title, selection: $selection) {
                 ForEach(options, id: \.self) { option in
                     Text(option.description).tag(option)
